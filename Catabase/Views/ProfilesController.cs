@@ -78,7 +78,28 @@ namespace Catabase.Views
             }
             return View(profile);
         }
+        public async Task<IActionResult> FollowUser(int profileId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Redirect("~/Identity/Account/Login");
+            }
+            if (_context.Follows.Where(l => l.User == user).Where(l => l.Profile.ProfileId == profileId).Count() <= 0)
+            {
+                var profile = _context.Profiles.SingleOrDefault(c => c.ProfileId == profileId);
+                var follow = new Follow
+                {
+                    Profile = profile,
+                    User = user
+                };
+                _context.Add(follow);
 
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Index", "Profiles");
+        }
         // GET: Profiles/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {

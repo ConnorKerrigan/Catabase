@@ -11,5 +11,6 @@ namespace Catabase.Models
         [ForeignKey("UserId")]
         public string UserId { get; set; }
         public CatabaseUser User { get; set; }
+        public ICollection<Follow>? Follows { get; set; }
     }
 }

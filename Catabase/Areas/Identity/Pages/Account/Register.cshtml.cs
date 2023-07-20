@@ -10,6 +10,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading;
 using System.Threading.Tasks;
+using Catabase.Data;
 using Catabase.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
@@ -24,6 +25,7 @@ namespace Catabase.Areas.Identity.Pages.Account
 {
     public class RegisterModel : PageModel
     {
+        private readonly ApplicationDbContext _context;
         private readonly SignInManager<CatabaseUser> _signInManager;
         private readonly UserManager<CatabaseUser> _userManager;
         private readonly IUserStore<CatabaseUser> _userStore;
@@ -31,12 +33,13 @@ namespace Catabase.Areas.Identity.Pages.Account
         private readonly ILogger<RegisterModel> _logger;
 
 
-        public RegisterModel(
+        public RegisterModel(ApplicationDbContext context,
             UserManager<CatabaseUser> userManager,
             IUserStore<CatabaseUser> userStore,
             SignInManager<CatabaseUser> signInManager,
             ILogger<RegisterModel> logger)
         {
+            _context = context;
             _userManager = userManager;
             _userStore = userStore;
             _emailStore = GetEmailStore();
@@ -140,6 +143,14 @@ namespace Catabase.Areas.Identity.Pages.Account
                         pageHandler: null,
                         values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
+
+                    Profile profile = new Profile
+                    {
+                        UserId = userId,
+                        ProfilePicPath = "Defaultpfp.jpg"
+                    };
+                    _context.Add(profile);
+                    await _context.SaveChangesAsync();
 
                     //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
                     //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");

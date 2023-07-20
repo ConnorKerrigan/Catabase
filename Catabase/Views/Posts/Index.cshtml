@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Catabase.Models.Post>
+@using Catabase.Views
 
 @{
     ViewData["Title"] = "Index";
@@ -35,7 +36,7 @@
                 @Html.DisplayFor(modelItem => item.Caption)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
+                    <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.LikeCount)
@@ -47,7 +48,11 @@
                 <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
                 <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
-            </td>
+                    <form method="POST" action="@Url.Action("SubmitLike","Likes")">
+                        <input type="hidden" value="@(item.PostId)" name="postId" class="btn-primary btn-sm" />
+                        <button type="submit">Like</button>
+                    </form>
+                </td>
         </tr>
 }
     </tbody>

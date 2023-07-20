@@ -28,12 +28,16 @@
                 @Html.DisplayFor(modelItem => item.ProfilePicPath)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.User.Id)
+                @Html.DisplayFor(modelItem => item.User.UserName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProfileId">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.ProfileId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProfileId">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.ProfileId">Delete</a> |
+                    <form method="POST" action="@Url.Action("FollowUser","Profiles")">
+                        <input type="hidden" value="@(item.ProfileId)" name="profileId" class="btn-primary btn-sm" />
+                        <button type="submit">Follow</button>
+                    </form>
             </td>
         </tr>
 }
