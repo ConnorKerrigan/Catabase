@@ -12,6 +12,7 @@ using System.IO;
 using System.Web;
 using Microsoft.Extensions.Hosting;
 using Humanizer;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catabase.Views
 {
@@ -34,6 +35,7 @@ namespace Catabase.Views
             var posts = _context.Posts
                 .Include(p => p.Likes)
                 .Include(p => p.PostAttributions)
+                .Include(p => p.CatabaseUser.Profile.Follows)
                 .AsNoTracking();
 
             foreach (var p in posts)
@@ -52,12 +54,13 @@ namespace Catabase.Views
                       Problem("Entity set 'ApplicationDbContext.Posts'  is null.");
         }
 
-        public async Task<IActionResult> IndexFollowing()
+        [Authorize]
+        public async Task<IActionResult> Following()
         {
-            var user = await _userManager.GetUserAsync(User);
-            var posts = _context.Posts //query for followed users
+            var posts = _context.Posts
                 .Include(p => p.Likes)
                 .Include(p => p.PostAttributions)
+                .Include(p => p.CatabaseUser.Profile.Follows)
                 .AsNoTracking();
 
             foreach (var p in posts)
@@ -68,7 +71,6 @@ namespace Catabase.Views
                     _context.Update(p);
 
                 }
-                
             }
             await _context.SaveChangesAsync();
 
@@ -97,6 +99,7 @@ namespace Catabase.Views
         }
 
         // GET: Posts/Create
+        [Authorize]
         public IActionResult Create()
         {
 
@@ -113,6 +116,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("PostId,Caption,ImageUrl,LikeCount,PostTime")] Post post, int[] catId, [Bind("file")] IFormFile file)
         {
             var allowedExtensions = new[] {
@@ -139,7 +143,7 @@ namespace Catabase.Views
                             Cat = _context.Cats.SingleOrDefault(c => c.CatId == i)
 
                         };
-                        _context.Add(postAttribution);
+                        await _context.AddAsync(postAttribution);
                     }
                     string name = Path.GetFileNameWithoutExtension(fileName); //getting file name without extension  
                     string myfile = name + "_" + post.PostId + ext; //appending the name with id  
@@ -169,6 +173,7 @@ namespace Catabase.Views
         }
 
         // GET: Posts/Edit/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -191,6 +196,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int id, [Bind("PostId,Caption,ImageUrl,LikeCount,PostTime")] Post post)
         {
             if (id != post.PostId)
@@ -223,6 +229,7 @@ namespace Catabase.Views
         }
 
         // GET: Posts/Delete/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Posts == null)
@@ -243,6 +250,7 @@ namespace Catabase.Views
         // POST: Posts/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Posts == null)

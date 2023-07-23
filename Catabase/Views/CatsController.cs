@@ -9,6 +9,7 @@ using Catabase.Data;
 using Catabase.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catabase.Views
 {
@@ -26,9 +27,11 @@ namespace Catabase.Views
         }
 
         // GET: Cats
+        [Authorize]
         public async Task<IActionResult> Index()
         {
-            var cats = _context.Cats
+            var user = await _userManager.GetUserAsync(User);
+            var cats = _context.Cats.Where(c=>c.OwnerID == user.Id)
                 .Include(c => c.Owner)
                 .AsNoTracking();
             return cats != null ?
@@ -37,6 +40,7 @@ namespace Catabase.Views
         }
 
         // GET: Cats/Details/5
+
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Cats == null)
@@ -57,6 +61,7 @@ namespace Catabase.Views
         }
 
         // GET: Cats/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -67,6 +72,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create([Bind("CatId,Name,Breed,Sex,Colour,Bio,DateOfBirth")] Cat cat)
         {
             if (!ModelState.IsValid)
@@ -86,6 +92,7 @@ namespace Catabase.Views
         }
 
         // GET: Cats/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Cats == null)
@@ -106,6 +113,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("CatId,Name,Breed,Sex,Colour,Bio,DateOfBirth")] Cat cat)
         {
             if (id != cat.CatId)
@@ -137,6 +145,7 @@ namespace Catabase.Views
         }
 
         // GET: Cats/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Cats == null)
@@ -157,6 +166,7 @@ namespace Catabase.Views
         // POST: Cats/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Cats == null)

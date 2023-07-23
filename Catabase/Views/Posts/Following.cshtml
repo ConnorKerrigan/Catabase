@@ -5,10 +5,10 @@
 @inject UserManager<CatabaseUser> UserManager
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Following";
 }
 
-<h1>Home</h1>
+<h1>Following</h1>
 
 <p>
     <a class="button-success" asp-action="Create">Create New Post</a>
@@ -38,7 +38,9 @@
 
             @if (item.CatabaseUser != null)
             {
-                
+                @if (UserManager.GetUserId(User) == null)
+                {
+                    <tr>No signed in user</tr>
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Caption)
@@ -62,7 +64,41 @@
                             </form>
                         </td>
                     </tr>
-               
+                }
+                else
+                {
+
+
+
+                    @if (item.CatabaseUser.Profile.Follows.Where(f => f.User.Id == UserManager.GetUserId(User)).Count() > 0)
+                    {
+
+
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Caption)
+                            </td>
+                            <td>
+                                <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.LikeCount)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PostTime)
+                            </td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
+                                <form method="POST" action="@Url.Action("SubmitLike","Likes")">
+                                    <input type="hidden" value="@(item.PostId)" name="postId" class="btn-primary btn-sm" />
+                                    <button type="submit">Like</button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                }
 
             }
         }

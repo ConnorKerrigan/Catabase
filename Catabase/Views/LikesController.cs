@@ -9,6 +9,7 @@ using Catabase.Data;
 using Catabase.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catabase.Views
 {
@@ -75,13 +76,14 @@ namespace Catabase.Views
         public async Task<IActionResult> SubmitLike(int postId)
         {
             var user = await _userManager.GetUserAsync(User);
+            var post = _context.Posts.SingleOrDefault(c => c.PostId == postId);
             if (user == null)
             {
                 return Redirect("~/Identity/Account/Login");
             }
             if (_context.Likes.Where(l => l.User == user).Where(l => l.Post.PostId == postId).Count() <= 0)
             {
-                var post = _context.Posts.SingleOrDefault(c => c.PostId == postId);
+                
                 var likeAtt = new Like
                 {
                     Post = post,
@@ -89,14 +91,21 @@ namespace Catabase.Views
                 };
                 _context.Add(likeAtt);
                 
-                await _context.SaveChangesAsync();
-                post.LikeCount = post.Likes.Count();
+                
             }
+            else if(_context.Likes.Where(l => l.User == user).Where(l => l.Post.PostId == postId).Count() > 0)
+            {
+                var like = _context.Likes.Where(l => l.User == user).Where(l => l.Post.PostId == postId).Select(l=>l);
+                _context.RemoveRange(like);
+            }
+            await _context.SaveChangesAsync();
+            post.LikeCount = post.Likes.Count();
 
             return RedirectToAction("Index", "Posts");
         }
 
         // GET: Likes/Edit/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Likes == null)
@@ -117,6 +126,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int id, [Bind("LikeId")] Like like)
         {
             if (id != like.LikeId)
@@ -148,6 +158,7 @@ namespace Catabase.Views
         }
 
         // GET: Likes/Delete/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Likes == null)
@@ -168,6 +179,7 @@ namespace Catabase.Views
         // POST: Likes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Likes == null)

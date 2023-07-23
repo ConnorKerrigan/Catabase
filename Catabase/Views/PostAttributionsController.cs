@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Catabase.Data;
 using Catabase.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catabase.Views
 {
@@ -20,6 +21,7 @@ namespace Catabase.Views
         }
 
         // GET: PostAttributions
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Index()
         {
             var postAttributions = _context.PostAttributions
@@ -31,6 +33,7 @@ namespace Catabase.Views
         }
 
         // GET: PostAttributions/Details/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.PostAttributions == null)
@@ -49,6 +52,7 @@ namespace Catabase.Views
         }
 
         // GET: PostAttributions/Create
+        [Authorize(Policy = "RequireAdmin")]
         public IActionResult Create()
         {
             return View();
@@ -59,6 +63,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Create([Bind("PostAttributionId")] PostAttribution postAttribution)
         {
             if (!ModelState.IsValid)
@@ -71,6 +76,7 @@ namespace Catabase.Views
         }
 
         // GET: PostAttributions/Edit/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.PostAttributions == null)
@@ -91,6 +97,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int id, [Bind("PostAttributionId")] PostAttribution postAttribution)
         {
             if (id != postAttribution.PostAttributionId)
@@ -122,6 +129,7 @@ namespace Catabase.Views
         }
 
         // GET: PostAttributions/Delete/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.PostAttributions == null)
@@ -142,6 +150,7 @@ namespace Catabase.Views
         // POST: PostAttributions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.PostAttributions == null)

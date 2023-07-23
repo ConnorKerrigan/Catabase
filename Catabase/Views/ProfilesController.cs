@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Catabase.Data;
 using Catabase.Models;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Catabase.Views
 {
@@ -60,6 +61,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Create([Bind("ProfileId,ProfilePicPath,UserId")] Profile profile)
         {
             if (!ModelState.IsValid)
@@ -90,17 +92,18 @@ namespace Catabase.Views
                 var profile = _context.Profiles.SingleOrDefault(c => c.ProfileId == profileId);
                 var follow = new Follow
                 {
-                    Profile = profile,
+                    ProfileId = profileId,
                     User = user
                 };
                 _context.Add(follow);
 
                 await _context.SaveChangesAsync();
             }
-
-            return RedirectToAction("Index", "Profiles");
+            var profile1 = await _context.Profiles.FindAsync(profileId);
+            return View(profile1);
         }
         // GET: Profiles/Edit/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Profiles == null)
