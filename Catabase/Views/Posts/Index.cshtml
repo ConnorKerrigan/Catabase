@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Catabase.Models.Post>
+﻿@model PaginatedList<Catabase.Models.Post>
 @using Catabase.Views
 @using Microsoft.AspNetCore.Identity
 @inject SignInManager<CatabaseUser> SignInManager
@@ -13,20 +13,31 @@
 <p>
     <a class="button-success" asp-action="Create">Create New Post</a>
 </p>
+
+<form asp-action="Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Find by name: <input type="text" name="SearchString" value="@ViewData["CurrentFilter"]" />
+            <input type="submit" value="Search" class="btn btn-default" /> |
+            <a asp-action="Index">Back to Full List</a>
+        </p>
+    </div>
+</form>
+
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Caption)
+                Caption
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
+                Image
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.LikeCount)
+                Likes
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PostTime)
+                <a asp-action="Index" asp-route-sortOrder="@ViewData["DateSortParm"]" asp-route-currentFilter="@ViewData["CurrentFilter"]">Date</a>
             </th>
 
             <th></th>
@@ -39,12 +50,15 @@
             @if (item.CatabaseUser != null)
             {
                 
+                
                     <tr>
                         <td>
                             @Html.DisplayFor(modelItem => item.Caption)
                         </td>
                         <td>
+                            <a asp-action="Details" style="color:black;" asp-route-id="@item.PostId">
                             <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
+                        </a>
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.LikeCount)
@@ -53,18 +67,44 @@
                             @Html.DisplayFor(modelItem => item.PostTime)
                         </td>
                         <td>
-                            <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a> |
-                            <a asp-action="Details" asp-route-id="@item.PostId">Details</a> |
-                            <a asp-action="Delete" asp-route-id="@item.PostId">Delete</a>
+                        @if (UserManager.GetUserId(User) != null)
+                        {
+                            @if (UserManager.GetUserId(User) == item.CatabaseUser.Id)
+                            {
+                                <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>                         
+                                <a asp-action = "Delete" asp-route-id = "@item.PostId"> Delete </a>
+                            }
+                        }
+                             
                             <form method="POST" action="@Url.Action("SubmitLike","Likes")">
                                 <input type="hidden" value="@(item.PostId)" name="postId" class="btn-primary btn-sm" />
                                 <button type="submit">Like</button>
                             </form>
                         </td>
                     </tr>
-               
+                
 
             }
         }
     </tbody>
 </table>
+
+@{
+    var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+    var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+}
+
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex - 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @prevDisabled">
+    Previous
+</a>
+<a asp-action="Index"
+   asp-route-sortOrder="@ViewData["CurrentSort"]"
+   asp-route-pageNumber="@(Model.PageIndex + 1)"
+   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+   class="btn btn-default @nextDisabled">
+    Next
+</a>

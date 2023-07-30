@@ -18,7 +18,7 @@
                  width="90"
                  style="border:solid">
             <div class="form-group">
-                <input type="file" title="search image" id="file" name="file" onchange="show(this)" />
+                <input type="file" title="Choose Image" id="file" name="file" onchange="show(this)" />
             </div>
             <div class="form-group">
                 <label asp-for="Caption" class="control-label"></label>
@@ -39,6 +39,7 @@
             @*<div class="item-add" >
                 <a id="add-row" class="link-button" onclick="newRow()">Add Row</a>
             </div>*@
+            @Html.ValidationSummary()
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

@@ -9,6 +9,7 @@ namespace Catabase.Models
     {
         public int FollowId { get; set; }
         [Required]
+        public string UserId { get; set; }
         public CatabaseUser User { get; set; }
         [Required]
         public int ProfileId { get; set; }

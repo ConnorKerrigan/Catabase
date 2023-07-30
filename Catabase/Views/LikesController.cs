@@ -100,6 +100,8 @@ namespace Catabase.Views
             }
             await _context.SaveChangesAsync();
             post.LikeCount = post.Likes.Count();
+            _context.Update(post);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Posts");
         }
