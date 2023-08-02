@@ -30,13 +30,14 @@
                 <div class="form-group">
                     <label class="control-label">Cat</label>
                     <div class="col-md-5">
-                        @Html.DropDownList("catId[0]", new SelectList(ViewBag.data, "CatId", "Name"), htmlAttributes: new { @class = "form-control"})
+                        @Html.DropDownList("catId[0]", new SelectList(ViewBag.data, "CatId", "Name"), htmlAttributes: new { @class = "form-control CatDropDown"})
                         @Html.ValidationMessageFor(x => x.PostAttributions, "", new { @class = "text-danger" })
                     </div>
                 </div>
             </div>
-
-            @*<div class="item-add" >
+            @*<div id="hiddenInputs"></div>
+            <p onclick="updateCatArray()">update</p>
+            <div class="item-add" >
                 <a id="add-row" class="link-button" onclick="newRow()">Add Row</a>
             </div>*@
             @Html.ValidationSummary()
@@ -62,8 +63,28 @@
         }
     }
 </script>
-<script type="text/javascript">
+<!--<script type="text/javascript">
+    function updateCatArray() {
+        alert("hiii");
+        cats = [];
+        var lists = document.getElementsByClassName("CatDropDown");
+        for (i in lists) {
+            var ops = lists[i].childNodes;
+            //alert(lists[i]);
+            //alert("a" + lists[i].options[lists[i].selectedIndex].value);
+            //alert("c");
+            cats.push(lists[i].options[lists[i].selectedIndex].value);
+            
+            $("#hiddenInputs").append(`
+                    <input type="hidden" value="`lists[i].options[lists[i].selectedIndex].value`" name="catId[` + i + `]" class="btn-primary btn-sm"/>
+            `);
 
+            //document.getElementById("arrayInput").value = "["+cats+"]";
+        }
+    }
+</script>-->
+<script type="text/javascript">
+    var cats = [];
     function newRow() {
         alert("fuck");
         var nextId = $(".myrow").length;
@@ -75,13 +96,14 @@
                     <div class="form-group">
                         <label class="control-label">Cat</label>
                         <div class="col-md-5">
-    @Html.DropDownList("catId[catId.Length + 1]", new SelectList(ViewBag.data, "CatId", "Name"), htmlAttributes: new { @class = "form-control"})
+    @Html.DropDownList("hi", new SelectList(ViewBag.data, "CatId", "Name"), htmlAttributes: new { @class = "form-control CatDropDown"})
     @Html.ValidationMessageFor(x => x.PostAttributions, "", new { @class = "text-danger" })
                         </div>
                     </div>
                 </div>
         `);
     }
+    
 </script>
 @section Scripts {
     @{

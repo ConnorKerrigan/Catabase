@@ -10,6 +10,7 @@ using Catabase.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Forms;
 
 namespace Catabase.Views
 {
@@ -77,6 +78,11 @@ namespace Catabase.Views
         {
             if (!ModelState.IsValid)
             {
+                if (cat.DateOfBirth > DateTime.Now)
+                {
+                    ModelState.AddModelError("", "Time travelling cats are not allowed!!");
+                    return View(cat);
+                }
                 var user = await _userManager.GetUserAsync(User);
                 if (user != null)
                 {

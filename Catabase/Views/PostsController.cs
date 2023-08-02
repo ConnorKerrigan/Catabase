@@ -111,6 +111,7 @@ namespace Catabase.Views
             var posts1 = from s in _context.Posts.Include(p => p.Likes)
                 .Include(p => p.PostAttributions)
                 .Include(p => p.CatabaseUser.Profile.Follows)
+                .Include(p => p.Likes)
                 .AsNoTracking()
                          select s;
 

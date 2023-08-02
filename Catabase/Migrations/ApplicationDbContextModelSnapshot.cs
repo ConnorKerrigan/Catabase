@@ -63,7 +63,7 @@ namespace Catabase.Migrations
 
                     b.HasIndex("OwnerID");
 
-                    b.ToTable("Cats");
+                    b.ToTable("Cats", (string)null);
                 });
 
             modelBuilder.Entity("Catabase.Models.Comment", b =>
@@ -91,7 +91,7 @@ namespace Catabase.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Comments");
+                    b.ToTable("Comments", (string)null);
                 });
 
             modelBuilder.Entity("Catabase.Models.Follow", b =>
@@ -117,7 +117,7 @@ namespace Catabase.Migrations
 
                     b.HasIndex("UserId1");
 
-                    b.ToTable("Follows");
+                    b.ToTable("Follows", (string)null);
                 });
 
             modelBuilder.Entity("Catabase.Models.Like", b =>
@@ -141,7 +141,7 @@ namespace Catabase.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Likes");
+                    b.ToTable("Likes", (string)null);
                 });
 
             modelBuilder.Entity("Catabase.Models.Post", b =>
@@ -172,7 +172,7 @@ namespace Catabase.Migrations
 
                     b.HasIndex("CatabaseUserId");
 
-                    b.ToTable("Posts");
+                    b.ToTable("Posts", (string)null);
                 });
 
             modelBuilder.Entity("Catabase.Models.PostAttribution", b =>
@@ -195,7 +195,7 @@ namespace Catabase.Migrations
 
                     b.HasIndex("PostId");
 
-                    b.ToTable("PostAttributions");
+                    b.ToTable("PostAttributions", (string)null);
                 });
 
             modelBuilder.Entity("Catabase.Models.Profile", b =>
@@ -218,7 +218,7 @@ namespace Catabase.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Profiles");
+                    b.ToTable("Profiles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

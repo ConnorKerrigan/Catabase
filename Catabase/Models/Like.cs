@@ -11,6 +11,7 @@ namespace Catabase.Models
         [Required]
         public Post Post { get; set; }
         [Required]
+        public string UserId { get; set; }
         public CatabaseUser User { get; set; }
 
     }
