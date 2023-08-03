@@ -1,4 +1,8 @@
 ﻿@model Catabase.Models.Post
+@using Catabase.Views
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<CatabaseUser> SignInManager
+@inject UserManager<CatabaseUser> UserManager
 
 @{
     ViewData["Title"] = "Details";
@@ -6,7 +10,9 @@
 
 
 <div>
+    <a href="../../Profiles/Details/@Html.DisplayFor(model=>model.CatabaseUser.Profile.ProfileId)">
     <h4><img height="60" style="border:solid" src="~/Images/@Html.DisplayFor(model => model.CatabaseUser.Profile.ProfilePicPath)">@Html.DisplayFor(model => model.CatabaseUser.UserName)</h4>
+    </a>
     <hr />
     <dl class="row">
         <dt>
@@ -32,7 +38,50 @@
         </dd>
     </dl>
 </div>
+<form method="POST" action="@Url.Action("SubmitLike","Likes")">
+    <input type="hidden" value="@(Model.PostId)" name="postId" class="btn-primary btn-sm" />
+    <button type="submit">
+
+        @if (UserManager.GetUserId(User) != null)
+        {
+
+            @if (Model.Likes.Where(p => p.UserId == UserManager.GetUserId(User)).Count() > 0)
+            {
+                @:Remove
+
+            }
+        }
+        Like
+
+    </button>
+</form>
+<form action="@Url.Action("AddComment","Comments")" method="POST">
+    <div class="form-actions no-color">
+        <p>
+            Comment <input type="text" name="commentText"  />
+            <input type="hidden" name="postId" value="@Model.PostId"/>
+            <input type="submit"  class="btn btn-success" /> 
+        </p>
+    </div>
+</form>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.PostId">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+<h2>Comments</h2>
+@foreach(var comment in Model.Comments)
+{
+    if(comment.UserId != null)
+    {
+        <hr />
+    <h4>
+        @await UserManager.GetUserNameAsync(await UserManager.FindByIdAsync(comment.UserId))
+         
+    </h4>
+    <p>
+    @comment.CommentContent
+    </p>
+    }
+    
+}
+
+

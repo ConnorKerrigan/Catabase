@@ -24,6 +24,8 @@ builder.Services.AddHealthChecks();
 
 builder.Services.AddRazorPages();
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("RequireAdmin",

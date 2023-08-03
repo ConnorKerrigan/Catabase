@@ -103,7 +103,7 @@ namespace Catabase.Views
             _context.Update(post);
             await _context.SaveChangesAsync();
 
-            return RedirectToAction("Index", "Posts");
+            return RedirectToAction("Details", "Posts", new { id = postId });
         }
 
         // GET: Likes/Edit/5

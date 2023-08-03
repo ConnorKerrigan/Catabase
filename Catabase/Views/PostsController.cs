@@ -162,7 +162,7 @@ namespace Catabase.Views
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p => p.CatabaseUser.Profile).Include(p => p.PostAttributions)
+            var post = await _context.Posts.Include(p => p.CatabaseUser.Profile).Include(p => p.PostAttributions).Include(p=>p.Comments).Include(p=>p.Likes)
                 .FirstOrDefaultAsync(m => m.PostId == id);
             if (post == null)
             {

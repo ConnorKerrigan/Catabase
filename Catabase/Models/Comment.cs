@@ -9,8 +9,10 @@ namespace Catabase.Models
     {
         public int CommentId { get; set; }
         [Required]
+        public int PostId { get; set; }
         public Post Post { get; set; }
         [Required]
+        public string UserId { get; set; }
         public CatabaseUser User { get; set; }
         [Required]
         public string CommentContent { get; set; }

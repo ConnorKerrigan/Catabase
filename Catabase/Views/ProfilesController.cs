@@ -39,7 +39,7 @@ namespace Catabase.Views
             }
 
             var profile = await _context.Profiles
-                .Include(p => p.User)
+                .Include(p => p.User).Include(p => p.User.Posts).Include(p => p.Follows)
                 .FirstOrDefaultAsync(m => m.ProfileId == id);
             if (profile == null)
             {
@@ -80,6 +80,7 @@ namespace Catabase.Views
             }
             return View(profile);
         }
+        [Authorize]
         public async Task<IActionResult> FollowUser(int profileId)
         {
             var user = await _userManager.GetUserAsync(User);
@@ -97,10 +98,16 @@ namespace Catabase.Views
                 };
                 _context.Add(follow);
 
-                await _context.SaveChangesAsync();
+                
             }
+            else if(_context.Follows.Where(l => l.User == user).Where(l => l.Profile.ProfileId == profileId).Count() > 0)
+            {
+                var follow = _context.Follows.Where(l => l.UserId == user.Id).Where(l => l.ProfileId == profileId).Select(l => l);
+                _context.RemoveRange(follow);
+            }
+            await _context.SaveChangesAsync();
             var profile1 = await _context.Profiles.FindAsync(profileId);
-            return View(profile1);
+            return RedirectToAction("Details", "Profiles", new {id=profileId});
         }
         // GET: Profiles/Edit/5
         [Authorize(Policy = "RequireAdmin")]
