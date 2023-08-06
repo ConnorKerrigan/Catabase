@@ -8,6 +8,8 @@ namespace Catabase.Models
     public class Post
     {
         public int PostId { get; set; }
+        [MaxLength(100)]
+        [RegularExpression(@"[\w\[ \]`!@#$%\^&*()={}:;<>+'-]*", ErrorMessage = "Text contains invalid characters")]
         public string? Caption { get; set; }
         public string ImageUrl { get; set; }
         public int LikeCount { get; set; }

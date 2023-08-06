@@ -76,23 +76,7 @@
                             }
                         }
 
-                        @*<form method="POST" action="@Url.Action("SubmitLike","Likes")">
-                            <input type="hidden" value="@(item.PostId)" name="postId" class="btn-primary btn-sm" />
-                            <button type="submit">
-
-                                @if (UserManager.GetUserId(User) != null)
-                                {
-
-                                    @if (item.Likes.Where(p => p.UserId == UserManager.GetUserId(User)).Count() > 0)
-                                    {
-                                        @:Remove
-
-                                    }
-                                }
-                                Like
-
-                            </button>
-                        </form>*@
+                        
                     </td>
                 </tr>
 
