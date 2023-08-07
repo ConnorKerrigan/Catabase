@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Forms;
+using Microsoft.Extensions.Hosting;
 
 namespace Catabase.Views
 {
@@ -32,7 +33,7 @@ namespace Catabase.Views
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var cats = _context.Cats.Where(c=>c.OwnerID == user.Id)
+            var cats = _context.Cats.Where(c => c.OwnerID == user.Id)
                 .Include(c => c.Owner)
                 .AsNoTracking();
             return cats != null ?
@@ -89,7 +90,7 @@ namespace Catabase.Views
                     cat.Owner = user;
                     _context.Add(cat);
                     await _context.SaveChangesAsync();
-                    
+
                 }
 
                 return RedirectToAction(nameof(Index));
@@ -101,6 +102,7 @@ namespace Catabase.Views
         [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
+            var user = await _userManager.GetUserAsync(User);
             if (id == null || _context.Cats == null)
             {
                 return NotFound();
@@ -110,6 +112,13 @@ namespace Catabase.Views
             if (cat == null)
             {
                 return NotFound();
+            }
+            if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
+            {
+                if (user.Id != cat.OwnerID)
+                {
+                    return NotFound();
+                }
             }
             return View(cat);
         }

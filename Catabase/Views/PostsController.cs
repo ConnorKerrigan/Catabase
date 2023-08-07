@@ -258,19 +258,24 @@ namespace Catabase.Views
         public async Task<IActionResult> Edit(int? id)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (id == null || _context.Posts == null)
+            if (id == null || _context.Posts == null || user == null)
             {
                 return NotFound();
             }
 
             var post = await _context.Posts.FindAsync(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
             if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
             {
-                if (post == null || user.Id != post.CatabaseUserId)
+                if (user.Id != post.CatabaseUserId)
                 {
                     return NotFound();
                 }
             }
+            
 
             return View(post);
         }
@@ -319,13 +324,17 @@ namespace Catabase.Views
         public async Task<IActionResult> Delete(int? id)
         {
             var user = await _userManager.GetUserAsync(User);
-            if (id == null || _context.Posts == null)
+            if (id == null || _context.Posts == null || user == null)
             {
                 return NotFound();
             }
 
             var post = await _context.Posts
                 .FirstOrDefaultAsync(m => m.PostId == id);
+            if (post == null)
+            {
+                return NotFound();
+            }
             if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
             {
                 if (post == null || user.Id != post.CatabaseUserId)
@@ -333,7 +342,7 @@ namespace Catabase.Views
                     return NotFound();
                 }
             }
-
+            
             return View(post);
         }
 
