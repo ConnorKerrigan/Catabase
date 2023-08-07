@@ -162,7 +162,7 @@ namespace Catabase.Views
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p => p.CatabaseUser.Profile).Include(p => p.PostAttributions).Include(p=>p.Comments).Include(p=>p.Likes)
+            var post = await _context.Posts.Include(p => p.CatabaseUser.Profile).Include(p => p.PostAttributions).Include(p => p.Comments).Include(p => p.Likes)
                 .FirstOrDefaultAsync(m => m.PostId == id);
             if (post == null)
             {
@@ -248,7 +248,7 @@ namespace Catabase.Views
 
                 }
 
-                
+
             }
             return RedirectToAction(nameof(Index));
         }
@@ -264,10 +264,14 @@ namespace Catabase.Views
             }
 
             var post = await _context.Posts.FindAsync(id);
-            if (post == null || user.Id != post.CatabaseUser.Id)
+            if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
             {
-                return NotFound();
+                if (post == null || user.Id != post.CatabaseUserId)
+                {
+                    return NotFound();
+                }
             }
+
             return View(post);
         }
 
@@ -322,9 +326,12 @@ namespace Catabase.Views
 
             var post = await _context.Posts
                 .FirstOrDefaultAsync(m => m.PostId == id);
-            if (post == null || user.Id != post.CatabaseUser.Id)
+            if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
             {
-                return NotFound();
+                if (post == null || user.Id != post.CatabaseUserId)
+                {
+                    return NotFound();
+                }
             }
 
             return View(post);

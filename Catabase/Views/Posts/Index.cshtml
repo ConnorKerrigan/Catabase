@@ -69,7 +69,7 @@
                     <td>
                         @if (UserManager.GetUserId(User) != null)
                         {
-                            @if (UserManager.GetUserId(User) == item.CatabaseUser.Id)
+                            @if (UserManager.GetUserId(User) == item.CatabaseUser.Id || this.User.IsInRole("Admin"))
                             {
                                 <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
                                 <a asp-action="Delete" asp-route-id="@item.PostId"> Delete </a>

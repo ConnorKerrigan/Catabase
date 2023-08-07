@@ -4,6 +4,7 @@ using Catabase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catabase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230807024514_postuseridadd")]
+    partial class postuseridadd
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -156,7 +159,6 @@ namespace Catabase.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CatabaseUserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
@@ -168,6 +170,10 @@ namespace Catabase.Migrations
 
                     b.Property<DateTime>("PostTime")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PostId");
 
@@ -510,9 +516,7 @@ namespace Catabase.Migrations
                 {
                     b.HasOne("Catabase.Models.CatabaseUser", "CatabaseUser")
                         .WithMany("Posts")
-                        .HasForeignKey("CatabaseUserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CatabaseUserId");
 
                     b.Navigation("CatabaseUser");
                 });

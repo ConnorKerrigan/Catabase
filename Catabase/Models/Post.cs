@@ -14,6 +14,7 @@ namespace Catabase.Models
         public string ImageUrl { get; set; }
         public int LikeCount { get; set; }
         public DateTime PostTime { get; set; }
+        public string CatabaseUserId { get; set; }
         public CatabaseUser CatabaseUser { get; set; }
         public ICollection<PostAttribution> PostAttributions { get; set; }
         public ICollection<Like>? Likes { get; set; }
