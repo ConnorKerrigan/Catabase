@@ -132,6 +132,7 @@ namespace Catabase.Views
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Edit(int id, [Bind("ProfileId,ProfilePicPath,UserId")] Profile profile)
         {
             if (id != profile.ProfileId)
@@ -164,6 +165,7 @@ namespace Catabase.Views
         }
 
         // GET: Profiles/Delete/5
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Profiles == null)
@@ -185,6 +187,7 @@ namespace Catabase.Views
         // POST: Profiles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Policy = "RequireAdmin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Profiles == null)
