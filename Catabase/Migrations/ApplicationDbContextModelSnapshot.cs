@@ -220,6 +220,13 @@ namespace Catabase.Migrations
                         .IsUnique();
 
                     b.ToTable("Profiles");
+
+                    b.HasData(
+                        new
+                        {
+                            ProfileId = -1,
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -247,6 +254,14 @@ namespace Catabase.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1d4defef-a40d-41ef-a329-3a141369652e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -407,6 +422,13 @@ namespace Catabase.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "1d4defef-a40d-41ef-a329-3a141369652e"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -436,6 +458,23 @@ namespace Catabase.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("CatabaseUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "73dff1c5-b1f0-4667-8d55-86c7582765b2",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAENnrW/a59RSuHoNZX1ACyVRwObYXZ+1QmkDsR+eoN2l1YEBg47qavKi7NIZlxfCUtQ==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "8d67a68b-9a72-4716-96ef-55b36bdb6476",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin",
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Catabase.Models.Cat", b =>

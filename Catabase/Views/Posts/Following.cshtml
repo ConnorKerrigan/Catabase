@@ -47,84 +47,84 @@
         @foreach (var item in Model)
         {
 
-           // @if (item.CatabaseUser != null)
+            // @if (item.CatabaseUser != null)
             //{
-                //@if (UserManager.GetUserId(User) == null)
-                //{
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Caption)
-                        </td>
-                        <td>
-                            <a asp-action="Details" style="color:black;" asp-route-id="@item.PostId">
-                                <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
-                            </a>
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LikeCount)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.PostTime)
-                        </td>
-                        <td>
+            //@if (UserManager.GetUserId(User) == null)
+            //{
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Caption)
+                </td>
+                <td>
+                    <a asp-action="Details" style="color:black;" asp-route-id="@item.PostId">
+                        <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
+                    </a>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LikeCount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PostTime)
+                </td>
+                <td>
                     @if (item.CatabaseUser != null)
-                            {
-                                @if (UserManager.GetUserId(User) == item.CatabaseUser.Id)
-                                {
-                                    <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
-                                    <a asp-action="Delete" asp-route-id="@item.PostId"> Delete </a>
-                                }
-                            }
+                    {
+                        @if (UserManager.GetUserId(User) == item.CatabaseUser.Id || this.User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@item.PostId"> Delete </a>
+                        }
+                    }
 
-                        </td>
-                    </tr>
-                //}
-                @*else
-                {
+                </td>
+            </tr>
+            //}
+            @*else
+        {
 
-                    //@if (item.CatabaseUser.Profile.Follows != null)
-                    //{
-
-
-
-                        //@if (item.CatabaseUser.Profile.Follows.Where(f => f.UserId == UserManager.GetUserId(User)).Count() > 0)
-                        //{
+        //@if (item.CatabaseUser.Profile.Follows != null)
+        //{
 
 
-                            <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Caption)
-                                </td>
-                                <td>
-                                    <a asp-action="Details" style="color:black;" asp-route-id="@item.PostId">
-                                        <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
-                                    </a>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.LikeCount)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.PostTime)
-                                </td>
-                                <td>
-                                    @if (UserManager.GetUserId(User) != null)
-                                    {
-                                        @if (UserManager.GetUserId(User) == item.CatabaseUser.Id)
-                                        {
-                                            <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
-                                            <a asp-action="Delete" asp-route-id="@item.PostId"> Delete </a>
-                                        }
-                                    }
 
-                                    <form method="POST" action="@Url.Action("SubmitLike","Likes")">
-                                        <input type="hidden" value="@(item.PostId)" name="postId" class="btn-primary btn-sm" />
-                                        <button type="submit">Like</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        //}
-                    //}
-                }*@
+        //@if (item.CatabaseUser.Profile.Follows.Where(f => f.UserId == UserManager.GetUserId(User)).Count() > 0)
+        //{
+
+
+        <tr>
+        <td>
+        @Html.DisplayFor(modelItem => item.Caption)
+        </td>
+        <td>
+        <a asp-action="Details" style="color:black;" asp-route-id="@item.PostId">
+        <img height="100" width="90" style="border:solid" src="~/Images/@item.ImageUrl">
+        </a>
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.LikeCount)
+        </td>
+        <td>
+        @Html.DisplayFor(modelItem => item.PostTime)
+        </td>
+        <td>
+        @if (UserManager.GetUserId(User) != null)
+        {
+        @if (UserManager.GetUserId(User) == item.CatabaseUser.Id)
+        {
+        <a asp-action="Edit" asp-route-id="@item.PostId">Edit</a>
+        <a asp-action="Delete" asp-route-id="@item.PostId"> Delete </a>
+        }
+        }
+
+        <form method="POST" action="@Url.Action("SubmitLike","Likes")">
+        <input type="hidden" value="@(item.PostId)" name="postId" class="btn-primary btn-sm" />
+        <button type="submit">Like</button>
+        </form>
+        </td>
+        </tr>
+        //}
+        //}
+        }*@
 
             //}
         }

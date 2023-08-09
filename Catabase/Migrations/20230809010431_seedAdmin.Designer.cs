@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catabase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230807024514_postuseridadd")]
-    partial class postuseridadd
+    [Migration("20230809010431_seedAdmin")]
+    partial class seedAdmin
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -159,6 +159,7 @@ namespace Catabase.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("CatabaseUserId")
+                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("ImageUrl")
@@ -170,10 +171,6 @@ namespace Catabase.Migrations
 
                     b.Property<DateTime>("PostTime")
                         .HasColumnType("datetime2");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("PostId");
 
@@ -253,6 +250,14 @@ namespace Catabase.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "1d4defef-a40d-41ef-a329-3a141369652e",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -413,6 +418,13 @@ namespace Catabase.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            RoleId = "1d4defef-a40d-41ef-a329-3a141369652e"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -442,6 +454,23 @@ namespace Catabase.Migrations
                         .HasColumnType("datetime2");
 
                     b.HasDiscriminator().HasValue("CatabaseUser");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "305fde3f-e0f9-4994-959a-dfc5c53b5430",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJyW3qOu6ZhXQga+/w27arrr4/qzVRrVdFUKZARhxxZk5SG2/XBAXOljYS4yFlozUg==",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "dc93ccd2-f0f6-4163-bbf5-5cfd72b3194b",
+                            TwoFactorEnabled = false,
+                            UserName = "Admin",
+                            DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
+                        });
                 });
 
             modelBuilder.Entity("Catabase.Models.Cat", b =>
@@ -516,7 +545,9 @@ namespace Catabase.Migrations
                 {
                     b.HasOne("Catabase.Models.CatabaseUser", "CatabaseUser")
                         .WithMany("Posts")
-                        .HasForeignKey("CatabaseUserId");
+                        .HasForeignKey("CatabaseUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("CatabaseUser");
                 });
