@@ -4,6 +4,7 @@ using Catabase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catabase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230812040032_newtest")]
+    partial class newtest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -463,13 +466,13 @@ namespace Catabase.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "043bee8a-72fc-46b6-b840-7d7c2684732a",
+                            ConcurrencyStamp = "206e9119-0c0b-46ac-8bbc-4f5988682a19",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENbr7d3UppZuGwMKWDdtMc3WLybndayJce121DQtYTk+V93jZtzKQ500mP1I1E0caA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAECSAtuWGvX5UnNUEgOOTL887rJZBVqsIfjKGwO14botCc6xF2BK+VWTMbcaltBsdnw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "92eace2e-b548-4b08-9b15-4a601859b225",
+                            SecurityStamp = "942259ed-0605-4960-9bcb-fe6544cc64fd",
                             TwoFactorEnabled = false,
                             UserName = "Admin",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)

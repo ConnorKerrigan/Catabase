@@ -4,6 +4,7 @@ using Catabase.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Catabase.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230812035829_modelstatenotvalid")]
+    partial class modelstatenotvalid
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -463,13 +466,13 @@ namespace Catabase.Migrations
                         {
                             Id = "8e445865-a24d-4543-a6c6-9443d048cdb9",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "043bee8a-72fc-46b6-b840-7d7c2684732a",
+                            ConcurrencyStamp = "770b5281-3754-4702-b029-20ac28e04181",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
                             NormalizedUserName = "ADMIN",
-                            PasswordHash = "AQAAAAIAAYagAAAAENbr7d3UppZuGwMKWDdtMc3WLybndayJce121DQtYTk+V93jZtzKQ500mP1I1E0caA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDUmiCnpJpJWCaw2K/R4GY0dkWkmZ4jtWtVbhbna9orO3W3oXLjz4IwqrqlRmn6wOA==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "92eace2e-b548-4b08-9b15-4a601859b225",
+                            SecurityStamp = "b7ab6df9-8ee4-49bb-a08c-cbdb7d2f5a9d",
                             TwoFactorEnabled = false,
                             UserName = "Admin",
                             DateCreated = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)

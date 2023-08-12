@@ -288,17 +288,23 @@ namespace Catabase.Views
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("PostId,Caption")] Post post)
+        public async Task<IActionResult> Edit(int id, string caption)
         {
+            var post = _context.Posts.Find(id);
+            if (post == null)
+            {
+                return NotFound();
+            }
             if (id != post.PostId)
             {
                 return NotFound();
             }
 
-            if (!ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 try
                 {
+                    post.Caption = caption;
                     _context.Update(post);
                     await _context.SaveChangesAsync();
 
