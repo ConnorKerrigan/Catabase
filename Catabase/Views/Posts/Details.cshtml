@@ -80,6 +80,13 @@
     <p>
     @comment.CommentContent
     </p>
+        @if (UserManager.GetUserId(User) != null)
+        {
+            @if (UserManager.GetUserId(User) == comment.UserId || this.User.IsInRole("Admin"))
+            {
+                <a asp-controller="Comments" asp-action="Delete" asp-route-id="@comment.CommentId"> Delete </a>
+            }
+        }
     }
     
 }

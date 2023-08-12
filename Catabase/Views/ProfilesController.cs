@@ -140,7 +140,7 @@ namespace Catabase.Views
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {

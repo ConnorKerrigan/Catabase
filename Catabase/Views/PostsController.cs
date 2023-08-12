@@ -84,7 +84,7 @@ namespace Catabase.Views
                     posts = posts.OrderBy(s => s.PostTime);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 6;
             return View(await PaginatedList<Post>.CreateAsync(posts.AsNoTracking(), pageNumber ?? 1, pageSize));
 
         }
@@ -148,7 +148,7 @@ namespace Catabase.Views
                     posts = posts.OrderBy(s => s.PostTime);
                     break;
             }
-            int pageSize = 3;
+            int pageSize = 6;
             return View(PaginatedList<Post>.Create(posts.AsQueryable().AsNoTracking(), pageNumber ?? 1, pageSize));
 
         }
@@ -295,7 +295,7 @@ namespace Catabase.Views
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 try
                 {
