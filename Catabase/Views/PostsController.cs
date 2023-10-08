@@ -326,6 +326,7 @@ namespace Catabase.Views
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ModelState.AddModelError("","Invalid Caption");
             return View(post);
         }
 
