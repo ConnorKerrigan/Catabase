@@ -86,22 +86,24 @@ namespace Catabase.Views
             var user = await _userManager.GetUserAsync(User);
             if (user == null)
             {
-                return Redirect("~/Identity/Account/Login");
+                return Redirect("~/Identity/Account/Login");//redirect to login if not logged in
             }
             if (_context.Follows.Where(l => l.User == user).Where(l => l.Profile.ProfileId == profileId).Count() <= 0)
             {
+                //follow instance does not already exist
                 var profile = _context.Profiles.SingleOrDefault(c => c.ProfileId == profileId);
                 var follow = new Follow
                 {
                     ProfileId = profileId,
                     User = user
                 };
-                _context.Add(follow);
+                _context.Add(follow);//create follow instance between current user and selected user
 
                 
             }
             else if(_context.Follows.Where(l => l.User == user).Where(l => l.Profile.ProfileId == profileId).Count() > 0)
             {
+                //if we get here, the follow already exists, therefore unfollow.
                 var follow = _context.Follows.Where(l => l.UserId == user.Id).Where(l => l.ProfileId == profileId).Select(l => l);
                 _context.RemoveRange(follow);
             }

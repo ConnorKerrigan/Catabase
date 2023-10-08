@@ -107,14 +107,14 @@ namespace Catabase.Views
 
             ViewData["CurrentFilter"] = searchString;
 
-
+            //takes all posts
             var posts1 = from s in _context.Posts.Include(p => p.Likes)
                 .Include(p => p.PostAttributions)
                 .Include(p => p.CatabaseUser.Profile.Follows)
                 .Include(p => p.Likes)
                 .AsNoTracking()
                          select s;
-
+            //reciever. empty enumerable will contain the filtered posts
             var posts = Enumerable.Empty<Post>();
 
 
@@ -122,11 +122,11 @@ namespace Catabase.Views
             foreach (var p in posts1)
             {
 
-
+                //this takes each post and filters for posts which were posted by a user that is followed by the current user.
                 if (p.CatabaseUser.Profile.Follows.Where(f => f.UserId == user.Id).Count() > 0)
                 {
                     var h = _context.Posts.Where(h => h == p).AsNoTracking();
-                    posts = posts.Concat(h);
+                    posts = posts.Concat(h); //adds this post to the empty enumerable
                 }
             }
 
@@ -134,7 +134,7 @@ namespace Catabase.Views
             if (!String.IsNullOrEmpty(searchString))
             {
                 
-
+                //filters posts which contain search string in caption, and ensures post user is not null to avoid errors.
                 posts = posts.Where(s => s.CatabaseUserId != null);
                 posts = posts.Where(s => s.Caption.Contains(searchString)
                                        || _context.Users.SingleOrDefault(i=>i.Id == s.CatabaseUserId).UserName.Contains(searchString));
@@ -208,12 +208,12 @@ namespace Catabase.Views
                 post.CatabaseUser = user;
                 post.LikeCount = 0;
                 post.PostTime = DateTime.Now;
-                var fileName = Path.GetFileName(file.FileName);
-                var ext = Path.GetExtension(file.FileName);
+                var fileName = Path.GetFileName(file.FileName); //get name of file
+                var ext = Path.GetExtension(file.FileName); //get ext of file (.png etc.)
 
                 if (fileSize > maxFileSize)
                 {
-                    return Content("File is too large (Max 10mb)");
+                    return Content("File is too large (Max 10mb)"); //displays error page
                 }
                 else
                 {
@@ -246,6 +246,7 @@ namespace Catabase.Views
                     }
                     else
                     {
+                        //file is of wrong type
                         return Content("Please only use supported filetypes (.Jpg, .jpg, .png, .jpeg)");
                     }
 
@@ -302,7 +303,7 @@ namespace Catabase.Views
             {
                 return NotFound();
             }
-
+            //post exists, and id of string matches
             if (ModelState.IsValid)
             {
                 try
@@ -346,8 +347,10 @@ namespace Catabase.Views
             }
             if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
             {
+                //user is not admin
                 if (post == null || user.Id != post.CatabaseUserId)
                 {
+                    //user did not create post, deny access
                     return NotFound();
                 }
             }

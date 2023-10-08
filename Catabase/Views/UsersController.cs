@@ -45,6 +45,7 @@ namespace Catabase.Views
 
             ViewData["CurrentFilter"] = searchString;
 
+            //queries users where username contains search string
             if (!String.IsNullOrEmpty(searchString))
             {
                 users = users.Where(s => s.UserName.Contains(searchString));
@@ -80,11 +81,12 @@ namespace Catabase.Views
         {
             if (_context.CatabaseUsers == null)
             {
-                return Problem("Entity set 'ApplicationDbContext.Cats'  is null.");
+                return Problem("Entity set 'ApplicationDbContext.CatabaseUsers'  is null.");
             }
             var user = await _context.CatabaseUsers.FindAsync(id);
             if (user != null)
             {
+                //remove all related data to and from user.
                 _context.Follows.RemoveRange(_context.Follows.Where(f=>f.UserId == user.Id || f.ProfileId == _context.Profiles.SingleOrDefault(p=>p.UserId == user.Id).ProfileId));
                 _context.Likes.RemoveRange(_context.Likes.Where(f => f.UserId == user.Id || f.Post.CatabaseUserId == user.Id));
                 _context.Comments.RemoveRange(_context.Comments.Where(f=>f.UserId==user.Id || f.Post.CatabaseUserId == user.Id));

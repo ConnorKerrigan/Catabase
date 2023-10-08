@@ -79,11 +79,11 @@ namespace Catabase.Views
             var post = _context.Posts.SingleOrDefault(c => c.PostId == postId);
             if (user == null)
             {
-                return Redirect("~/Identity/Account/Login");
+                return Redirect("~/Identity/Account/Login");//redirect to login if not signed in
             }
             if (_context.Likes.Where(l => l.User == user).Where(l => l.Post.PostId == postId).Count() <= 0)
             {
-                
+                //if we get here, like instance does not already exist
                 var likeAtt = new Like
                 {
                     Post = post,
@@ -95,6 +95,7 @@ namespace Catabase.Views
             }
             else if(_context.Likes.Where(l => l.User == user).Where(l => l.Post.PostId == postId).Count() > 0)
             {
+                // if we get here, like instance already exists, therefore remove like.
                 var like = _context.Likes.Where(l => l.User == user).Where(l => l.Post.PostId == postId).Select(l=>l);
                 _context.RemoveRange(like);
             }

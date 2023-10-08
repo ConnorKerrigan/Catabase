@@ -33,7 +33,7 @@ namespace Catabase.Views
         public async Task<IActionResult> Index()
         {
             var user = await _userManager.GetUserAsync(User);
-            var cats = _context.Cats.Where(c => c.OwnerID == user.Id)
+            var cats = _context.Cats.Where(c => c.OwnerID == user.Id) // linq query to only display cats owned by the current user
                 .Include(c => c.Owner)
                 .AsNoTracking();
             return cats != null ?
@@ -81,6 +81,7 @@ namespace Catabase.Views
             {
                 if (cat.DateOfBirth > DateTime.Now)
                 {
+                    //get here if user sets date of birth to a time in the future
                     ModelState.AddModelError("", "Time travelling cats are not allowed!!");
                     return View(cat);
                 }
@@ -115,8 +116,10 @@ namespace Catabase.Views
             }
             if (_context.UserRoles.Where(ur => ur.UserId == user.Id).Where(ur => ur.RoleId == _context.Roles.SingleOrDefault(r => r.Name == "Admin").Id).Count() <= 0)
             {
+                //user is not admin
                 if (user.Id != cat.OwnerID)
                 {
+                    //user does not own cat, return 404
                     return NotFound();
                 }
             }
@@ -140,7 +143,7 @@ namespace Catabase.Views
             {
                 try
                 {
-                    cat.OwnerID = _userManager.GetUserId(User);
+                    cat.OwnerID = _userManager.GetUserId(User); //set the ownerID to current user, as this is not manually set
                     _context.Update(cat);
                     await _context.SaveChangesAsync();
                 }
