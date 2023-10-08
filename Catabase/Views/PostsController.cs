@@ -133,8 +133,11 @@ namespace Catabase.Views
             //Queries the data to obtain data which matches search string in multiple fields
             if (!String.IsNullOrEmpty(searchString))
             {
+                
+
+                posts = posts.Where(s => s.CatabaseUserId != null);
                 posts = posts.Where(s => s.Caption.Contains(searchString)
-                                       || s.CatabaseUser.UserName.Contains(searchString));
+                                       || _context.Users.SingleOrDefault(i=>i.Id == s.CatabaseUserId).UserName.Contains(searchString));
             }
             switch (sortOrder)
             {

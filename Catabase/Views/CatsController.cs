@@ -140,6 +140,7 @@ namespace Catabase.Views
             {
                 try
                 {
+                    cat.OwnerID = _userManager.GetUserId(User);
                     _context.Update(cat);
                     await _context.SaveChangesAsync();
                 }
