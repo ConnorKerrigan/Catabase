@@ -193,7 +193,7 @@ namespace Catabase.Views
         [Authorize]
         public async Task<IActionResult> Create([Bind("PostId,Caption,ImageUrl,LikeCount,PostTime")] Post post, int[] catId, [Bind("file")] IFormFile file)
         {
-            long maxFileSize = 18000000;
+            long maxFileSize = 10000000;
             long fileSize = file.Length;
             var allowedExtensions = new[] {
                 ".Jpg", ".png", ".jpg", "jpeg"
