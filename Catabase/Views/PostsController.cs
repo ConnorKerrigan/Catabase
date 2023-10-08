@@ -213,7 +213,7 @@ namespace Catabase.Views
 
                 if (fileSize > maxFileSize)
                 {
-                    return Content("File is too large (Max 18mb)");
+                    return Content("File is too large (Max 10mb)");
                 }
                 else
                 {
