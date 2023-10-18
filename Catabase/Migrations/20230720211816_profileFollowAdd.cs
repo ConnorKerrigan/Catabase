@@ -10,25 +10,25 @@ namespace Catabase.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddForeignKey(
-                name: "FK_Follows_Profiles_ProfileId",
-                table: "Follows",
-                column: "ProfileId",
-                principalTable: "Profiles",
-                principalColumn: "ProfileId",
-                onDelete: ReferentialAction.Cascade);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Follows_Profiles_ProfileId",
+            //    table: "Follows",
+            //    column: "ProfileId",
+            //    principalTable: "Profiles",
+            //    principalColumn: "ProfileId",
+            //    onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddForeignKey(
-                name: "FK_Follows_Profiles_ProfileId",
-                table: "Follows",
-                column: "ProfileId",
-                principalTable: "Profiles",
-                principalColumn: "ProfileId",
-                onDelete: ReferentialAction.Cascade);
+            //migrationBuilder.AddForeignKey(
+            //    name: "FK_Follows_Profiles_ProfileId",
+            //    table: "Follows",
+            //    column: "ProfileId",
+            //    principalTable: "Profiles",
+            //    principalColumn: "ProfileId",
+            //    onDelete: ReferentialAction.Cascade);
         }
     }
 }
